@@ -19,8 +19,13 @@ export default function App() {
 
 	const advanceGrid = (grid: boolean[][]) => {
 		const newGrid = advance(grid);
-		setGrid(newGrid);
-		setGridStates([...gridStates, newGrid]);
+
+		if (JSON.stringify(grid) === JSON.stringify(newGrid)) {
+			setAutoGenerate(!autoGenerate);
+		} else {
+			setGrid(newGrid);
+			setGridStates([...gridStates, newGrid]);
+		}
 	};
 
 	const flipCell = (x: number, y: number) => {
