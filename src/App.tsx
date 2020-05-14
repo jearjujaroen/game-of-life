@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import './App.css';
 
 import { TOAD, SIMPLE, RANDOM, BLANK } from './patterns';
@@ -19,8 +19,13 @@ export default function App() {
 
 	const advanceGrid = (grid: boolean[][]) => {
 		const newGrid = advance(grid);
-		setGrid(newGrid);
-		setGridStates([...gridStates, newGrid]);
+
+		if (JSON.stringify(grid) === JSON.stringify(newGrid)) {
+			setAutoGenerate(!autoGenerate);
+		} else {
+			setGrid(newGrid);
+			setGridStates([...gridStates, newGrid]);
+		}
 	};
 
 	const flipCell = (x: number, y: number) => {
@@ -39,7 +44,7 @@ export default function App() {
 			}, 500);
 			return () => clearInterval(interval);
 		}
-	}, [grid, autoGenerate, gridStates]);
+	}, [grid, autoGenerate]);
 
 	return (
 		<div className='container'>
